@@ -1,4 +1,4 @@
-#!/usr/bin/guile -s
+#!/usr/bin/env -S guile -s
 !#
 
 (use-modules (ice-9 rdelim))

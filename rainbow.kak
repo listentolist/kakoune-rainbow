@@ -45,16 +45,14 @@ define-command -override rainbow %{
     }
   }
   # the program for creating the range-specs is run in the background
-  connect-shell %{
-    send set window rainbow_specs "$(get %val{timestamp})" \
+  connect-shell sh -c %{
+    rainbow_selections="$(:get %opt{rainbow_selections})"
+    rainbow_ranges="$(:get %opt{rainbow_ranges})"
+    :send set-option window rainbow_specs "$5" \
       $(printf "%s\n%s\n%s\n%s\n%s\n%s" \
-               "$(get %opt{rainbow_selections})" \
-               "$(get %opt{rainbow_ranges})" \
-               "$(get %opt{rainbow_colors})" \
-               "$(get %opt{rainbow_opening})" \
-               "$(get %opt{rainbow_closing})" \
-               | "$(get %opt{rainbow_path})/bin/kak-rainbow.scm")
-  }
+        "$rainbow_selections" "$rainbow_ranges" "$1" "$2" "$3" | "$4")
+  } -- "%opt{rainbow_colors}" "%opt{rainbow_opening}" "%opt{rainbow_closing}" \
+       "%opt{rainbow_path}/bin/kak-rainbow.scm" "%val{timestamp}"
 }
 
 # filetype specific hooks
